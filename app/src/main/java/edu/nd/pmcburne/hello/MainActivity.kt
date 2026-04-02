@@ -31,6 +31,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.nd.pmcburne.hello.ui.theme.MyApplicationTheme
 
+
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.CameraPosition
+
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.rememberUpdatedMarkerState
+
 class MainActivity : ComponentActivity() {
     private val viewModel by viewModels<MainViewModel>()
 
@@ -40,7 +49,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyApplicationTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MainScreen(viewModel, modifier = Modifier.padding(innerPadding))
+//                    MainScreen(viewModel, modifier = Modifier.padding(innerPadding))
+                    MapTest(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
@@ -107,5 +117,29 @@ fun Counter(
 fun CounterPreview() {
     MyApplicationTheme {
         Counter(viewModel = MainViewModel(0))
+    }
+}
+
+
+// Test code from documentation to check if my api stuff is working correctly
+//https://developers.google.com/maps/documentation/android-sdk/maps-compose
+
+@Composable
+fun MapTest(modifier: Modifier = Modifier) {
+    val singapore = LatLng(1.35, 103.87)
+    val singaporeMarkerState = rememberUpdatedMarkerState(position = singapore)
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(singapore, 10f)
+    }
+
+    GoogleMap(
+        modifier = modifier.fillMaxSize(),
+        cameraPositionState = cameraPositionState
+    ) {
+        Marker(
+            state = singaporeMarkerState,
+            title = "Singapore",
+            snippet = "Marker in Singapore"
+        )
     }
 }
