@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-
+    id("com.google.devtools.ksp") version "2.3.6"
 }
 
 android {
@@ -45,6 +45,12 @@ android {
 }
 
 dependencies {
+    val room_version = "2.8.4"
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
+    implementation("androidx.room:room-runtime:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
+
     implementation(libs.play.services.maps)
 
     implementation("com.google.maps.android:maps-compose:6.12.0")
