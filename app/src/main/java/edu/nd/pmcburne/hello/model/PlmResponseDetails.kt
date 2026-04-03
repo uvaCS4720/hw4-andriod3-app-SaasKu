@@ -9,15 +9,16 @@ data class PlmResponseDetails(
     val name: String,
     val tag_list: List<String>,
     val description: String,
-    val coordinates: VisualCenter
+    val visual_center: VisualCenter
 ){
     fun convertToPlm(): Placemark{
+        val center = visual_center
         return Placemark(
             id = id,
             name = name,
             description = description,
-            latitude = coordinates.latitude,
-            longitude = coordinates.longitude
+            latitude = center.latitude,
+            longitude = center.longitude
         )
     }
 
