@@ -67,7 +67,10 @@ class MainActivity: ComponentActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            GroundsMapScreen(vm = vm)
+            MyApplicationTheme{
+                GroundsMapScreen(vm = vm)
+            }
+
         }
     }
 }
