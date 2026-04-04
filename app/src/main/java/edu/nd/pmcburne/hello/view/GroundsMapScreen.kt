@@ -1,11 +1,15 @@
 package edu.nd.pmcburne.hello.view
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,6 +22,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import edu.nd.pmcburne.hello.viewmodel.PlmViewModel
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -33,12 +38,15 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerInfoWindowContent
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.rememberMarkerState
+import edu.nd.pmcburne.hello.model.Placemark
 
 // TODO: DONT FORGET TO CITE YOUR SOURCES!!!!
 //https://developers.google.com/maps/documentation/android-sdk/maps-compose
-
+//https://googlemaps.github.io/android-maps-compose/maps-compose/com.google.maps.android.compose/-marker-info-window-content.html
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,7 +64,7 @@ fun GroundsMapScreen(vm: PlmViewModel){
 
     val rotunda_center = LatLng(38.03567, -78.50365)
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(rotunda_center, 13f)
+        position = CameraPosition.fromLatLngZoom(rotunda_center, 15f)
     }
 
     Scaffold(
@@ -120,24 +128,50 @@ fun GroundsMapScreen(vm: PlmViewModel){
                         }
                     }
                 }
+                Text(
+                    text = "Click on each description to see the full description!",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp, start = 4.dp)
+                )
 
             }
-
+            var selectedPlm by remember { mutableStateOf<Placemark?>(null) }
             GoogleMap(
                 modifier = Modifier.fillMaxSize(),
                 cameraPositionState = cameraPositionState
             ){
                 plms.forEach{
                         plm ->
+                    val markerState = remember(plm.id){
+                        MarkerState(position = LatLng(plm.latitude, plm.longitude))
+                    }
                     Marker(
-                        state = MarkerState(
-                            position = LatLng(plm.latitude, plm.longitude)
-                        ),
+                        state = markerState,
                         title = plm.name,
-                        snippet = plm.description
-
+                        snippet = plm.description,
+                        onInfoWindowClick = {
+                            selectedPlm = plm
+                        }
                     )
+
                 }
+            }
+
+            selectedPlm?.let { plm ->
+                AlertDialog(
+                    onDismissRequest = { selectedPlm = null },
+                    confirmButton = {
+                        TextButton(onClick = { selectedPlm = null }) {
+                            Text("Close")
+                        }
+                    },
+                    title = {
+                        Text(plm.name)
+                    },
+                    text = {
+                        Text(plm.description)
+                    }
+                )
             }
 
 
@@ -145,6 +179,21 @@ fun GroundsMapScreen(vm: PlmViewModel){
         }
 
     }
+}
 
-
+@Composable
+fun PlmInfoWindow(plm: Placemark){
+    Column(
+        modifier = Modifier.width(200.dp).padding(10.dp)
+    ){
+        Text(
+            text = plm.name,
+            style = MaterialTheme.typography.titleMedium
+        )
+        Spacer(modifier = Modifier.height(5.dp))
+        Text(
+            text = plm.description,
+            style = MaterialTheme.typography.bodyMedium
+        )
+    }
 }
