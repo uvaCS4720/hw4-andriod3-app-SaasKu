@@ -1,7 +1,14 @@
 package edu.nd.pmcburne.hello.model
 
 import androidx.room.*
-
+/***************************************************************************************
+ * REFERENCES
+ * Title: Accessing data using Room DAOs
+ * Author: Android Developers
+ * URL: https://developer.android.com/training/data-storage/room/accessing-data?utm_source=android-studio-app&utm_medium=app
+ * Software License: Apache 2 License
+ * Usage: I used this as a reference for configuring my Dao setup.
+ ***************************************************************************************/
 @Dao
 interface PlmDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
