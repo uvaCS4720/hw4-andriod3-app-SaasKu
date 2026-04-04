@@ -135,7 +135,8 @@ fun GroundsMapScreen(vm: PlmViewModel){
                 }
                 Text(
                     text = "Click on each description to see the full description!",
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Bold,
                     modifier = Modifier.fillMaxWidth().padding(top = 8.dp, start = 4.dp)
                 )
 
