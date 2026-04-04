@@ -44,9 +44,14 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import edu.nd.pmcburne.hello.model.Placemark
 
-// TODO: DONT FORGET TO CITE YOUR SOURCES!!!!
-//https://developers.google.com/maps/documentation/android-sdk/maps-compose
-//https://googlemaps.github.io/android-maps-compose/maps-compose/com.google.maps.android.compose/-marker-info-window-content.html
+/***************************************************************************************
+ * REFERENCES
+ * Title:  Maps Compose Library
+ * Author: Google Maps Platform
+ * URL:https://developers.google.com/maps/documentation/android-sdk/maps-compose
+ * Software License: Apache 2 License
+ * Usage: I used this as reference to implement the Google map implementation in my code
+ ***************************************************************************************/
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -178,22 +183,5 @@ fun GroundsMapScreen(vm: PlmViewModel){
 
         }
 
-    }
-}
-
-@Composable
-fun PlmInfoWindow(plm: Placemark){
-    Column(
-        modifier = Modifier.width(200.dp).padding(10.dp)
-    ){
-        Text(
-            text = plm.name,
-            style = MaterialTheme.typography.titleMedium
-        )
-        Spacer(modifier = Modifier.height(5.dp))
-        Text(
-            text = plm.description,
-            style = MaterialTheme.typography.bodyMedium
-        )
     }
 }

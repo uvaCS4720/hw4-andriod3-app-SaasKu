@@ -4,6 +4,16 @@ import androidx.room.*
 
 import android.content.Context
 
+/***************************************************************************************
+ * REFERENCES
+ * Title: Persist data with Room
+ * Author: Android Developers
+ * URL:https://developer.android.com/codelabs/basic-android-kotlin-compose-persisting-data-room?authuser=2#0
+ * Date: May 17, 2024
+ * Software License: Apache 2 License
+ * Usage: I used this as reference for my Room implementation.
+ ***************************************************************************************/
+
 @Database(
     entities = [Placemark::class, PlmTag::class],
     version = 1,
